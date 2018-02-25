@@ -1,6 +1,5 @@
 syntax on
 filetype plugin indent on
-colorscheme wombat256
 
 
 "
@@ -66,10 +65,15 @@ set updatetime=250
 set cursorline
 set listchars=tab:.\ 
 
+
+" Theme and colors
+colorscheme wombat256
+hi Normal ctermbg=black
 hi ModeMsg ctermfg=yellow
-hi LineNr ctermfg=grey
-hi CursorLineNr ctermfg=red
+hi LineNr ctermfg=darkgrey
+" hi CursorLineNr ctermfg=red
 " hi CursorLine cterm=BOLD ctermfg=NONE ctermbg=NONE
+
 
 " Indent setup
 autocmd FileType go set sw=4 ts=4 noexpandtab
@@ -78,6 +82,10 @@ if match(getcwd(), 'work')
     autocmd FileType c,cpp set sw=4 ts=4 expandtab
 endif
 
+
+"
+" Key mappings
+"
 
 let os=substitute(system('uname'), '\n', '', '')
 

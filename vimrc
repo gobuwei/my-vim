@@ -60,7 +60,7 @@ set incsearch       " Incremental search
 "set autowrite      " Automatically save before commands like :next and :make
 set hidden          " Hide buffers when they are abandoned
 set mouse=nv        " Enable mouse usage (all modes)
-set scrolloff=5
+set scrolloff=3
 set updatetime=250
 set cursorline
 set listchars=tab:.\ 

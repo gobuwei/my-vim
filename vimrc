@@ -100,9 +100,19 @@ elseif os == 'Linux'
     nmap yp :set paste<CR>:r !xclip -o -sel clip<CR>:set nopaste<CR>
 endif
 
+fun! QuickfixToggle()
+    let l:nr = winnr("$")
+    cwindow
+    let l:nr2 = winnr("$")
+    if l:nr == l:nr2
+        cclose
+    endif
+endfunction
 
 " Fn keys
 nmap <F2> :Tagbar<CR>
+nmap <F3> :NERDTreeToggle<CR>
+nmap <F4> :call QuickfixToggle()<CR>
 nmap <F5> :set ts=2 sw=2<CR>
 nmap <F6> :set ts=4 sw=4<CR>
 nmap <F7> :set ts=8 sw=8 noexpandtab<CR>

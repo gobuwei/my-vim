@@ -67,12 +67,12 @@ set listchars=tab:.\
 
 
 " Theme and colors
-colorscheme wombat256
-hi Normal ctermbg=black
+" colorscheme wombat256
+" hi Normal ctermbg=black
 hi ModeMsg ctermfg=yellow
 hi LineNr ctermfg=darkgrey
-" hi CursorLineNr ctermfg=red
-" hi CursorLine cterm=BOLD ctermfg=NONE ctermbg=NONE
+hi CursorLineNr ctermfg=red
+hi CursorLine cterm=BOLD ctermfg=NONE ctermbg=NONE
 
 
 " Indent setup

@@ -175,7 +175,7 @@ function! CscopeKeyMapping()
     nmap  t :cs find c <C-R>=expand("<cword>")<CR><CR>
     nmap gs :cs find s <C-R>=expand("<cword>")<CR><CR>
     nmap gt :cs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap gd :cs find d <C-R>=expand("<cword>")<CR><CR>
+    " nmap gd :cs find d <C-R>=expand("<cword>")<CR><CR>
     nmap gf :cs find f <C-R>=expand("<cfile>")<CR><CR>
     nmap gi :cs find i <C-R>=expand("<cfile>")<CR><CR>
     nmap ge :cs find e <C-R>=expand("<cword>")<CR><CR>
@@ -185,7 +185,7 @@ function! CscopeKeyMapping()
     vmap  t <ESC>:cs find c <C-R>=GetVisualSelection()<CR><CR>
     vmap gs <ESC>:cs find s <C-R>=GetVisualSelection()<CR><CR>
     vmap gt <ESC>:cs find t <C-R>=GetVisualSelection()<CR><CR>
-    vmap gd <ESC>:cs find d <C-R>=GetVisualSelection()<CR><CR>
+    " vmap gd <ESC>:cs find d <C-R>=GetVisualSelection()<CR><CR>
     vmap gf <ESC>:cs find f <C-R>=GetVisualSelection()<CR><CR>
     vmap gi <ESC>:cs find i <C-R>=GetVisualSelection()<CR><CR>
     vmap ge <ESC>:cs find e <C-R>=GetVisualSelection()<CR><CR>

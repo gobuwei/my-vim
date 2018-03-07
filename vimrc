@@ -120,8 +120,8 @@ nmap <F12> :call LoadTags()<CR>
 
 " Window mappings
 map <TAB> <C-W>w
-unmap <C-I>
 map <S-TAB> <C-W>W
+nnoremap <C-J> <C-I>
 map sq :q<CR>
 map ss :split<CR>
 map sv :vsplit<CR>

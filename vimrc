@@ -3,7 +3,7 @@ filetype plugin indent on
 
 
 "
-" Plugings on github.com
+" Plugins from github.com
 " Use command ':PlugInstall' to install them
 "
 call plug#begin()

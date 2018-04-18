@@ -7,8 +7,9 @@ filetype plugin indent on
 " Use command ':PlugInstall' to install them
 "
 call plug#begin()
-Plug 'vim-airline/vim-airline'
-" Plug 'itchyny/lightline.vim'
+" Plug 'vim-airline/vim-airline'
+Plug 'itchyny/lightline.vim'
+Plug 'ap/vim-buftabline'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
@@ -33,6 +34,9 @@ let g:linuxsty_patterns = [ "/linux", "/kernel" ]
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 " let g:airline#extensions#tabline#buffer_idx_mode = 1
+
+let g:buftabline_numbers=1
+let g:buftabline_show=1
 
 " tagbar settings
 let g:tagbar_left = 1
@@ -74,6 +78,12 @@ colorscheme wombat256
 " hi LineNr ctermfg=darkgrey
 " hi CursorLineNr ctermfg=red
 " hi CursorLine cterm=BOLD ctermfg=NONE ctermbg=NONE
+
+" BufTabLine colors
+hi BufTabLineFill ctermbg=black
+hi BufTabLineCurrent cterm=BOLD ctermfg=black ctermbg=green
+hi BufTabLineActive ctermfg=yellow ctermbg=black
+hi BufTabLineHidden cterm=NONE ctermfg=grey ctermbg=black
 
 
 " Indent setup

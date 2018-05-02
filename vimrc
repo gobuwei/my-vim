@@ -204,10 +204,20 @@ function! CscopeKeyMapping()
 endfunction
 
 function LoadTags()
-    " Lookup parent directory recurcivly if no tag file found
-    " in current directory
     let l:dir = getcwd()
 
+    let l:tagfile = l:dir . '/cscope.out'
+    if filereadable(l:tagfile)
+        set cscopetag
+        silent! execute 'cs add ' . l:tagfile
+        call CscopeKeyMapping()
+        " remap <F12> to tags update
+        map <F12> :<C-U>cs reset<CR>
+        break
+    endif
+
+    " Lookup parent directory recurcivly if no tag file found
+    " in current directory
     while l:dir != "/"
         let l:tagfile = l:dir . '/GTAGS'
 

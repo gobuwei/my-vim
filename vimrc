@@ -82,7 +82,7 @@ hi CursorLine cterm=BOLD ctermfg=NONE ctermbg=NONE
 " BufTabLine colors
 hi BufTabLineFill ctermbg=black
 hi BufTabLineCurrent cterm=BOLD ctermfg=black ctermbg=green
-hi BufTabLineActive ctermfg=yellow ctermbg=black
+hi BufTabLineActive ctermfg=black ctermbg=grey
 hi BufTabLineHidden cterm=NONE ctermfg=grey ctermbg=black
 
 

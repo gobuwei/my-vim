@@ -120,6 +120,24 @@ fun! QuickfixToggle()
     endif
 endfunction
 
+fun! ToggleWindowWidth()
+    let l:w = winwidth(0)
+    if l:w == 120
+        silent! execute 'wincmd ='
+    else
+        silent! execute 'vertical resize 120'
+    endif
+endfunction
+
+fun! ToggleWindowHeight()
+    let l:h = winheight(0)
+    if l:h == 32
+        silent! execute 'wincmd ='
+    else
+        silent! execute 'resize 32'
+    endif
+endfunction
+
 " Fn keys
 nmap <F2> :Tagbar<CR>
 nmap <F3> :NERDTreeToggle<CR>
@@ -154,6 +172,8 @@ map <SPACE>tx :set expandtab!<CR>
 map <SPACE>tf :NERDTreeToggle<CR>
 map <SPACE>cc :cclose<CR>
 map <SPACE>co :copen<CR>
+map <SPACE>ww :call ToggleWindowWidth()<CR>
+map <SPACE>wh :call ToggleWindowHeight()<CR>
 
 map <C-k> :bp<CR>
 map <C-l> :bn<CR>

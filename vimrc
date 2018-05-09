@@ -73,7 +73,7 @@ set listchars=tab:.\
 
 " Theme and colors
 " colorscheme wombat256
-hi Normal ctermbg=black
+" hi Normal ctermbg=black
 hi ModeMsg ctermfg=yellow
 hi LineNr ctermfg=darkgrey
 hi CursorLineNr ctermfg=red

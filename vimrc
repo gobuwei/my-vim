@@ -138,6 +138,15 @@ fun! ToggleWindowHeight()
     endif
 endfunction
 
+function! ToggleBuftabline()
+    if g:buftabline_show != 2
+        let g:buftabline_show += 1
+    else
+        let g:buftabline_show = 0
+    endif
+    call buftabline#update(0)
+endfunction
+
 " Fn keys
 nmap <F2> :Tagbar<CR>
 nmap <F3> :NERDTreeToggle<CR>
@@ -170,6 +179,7 @@ map <SPACE>tl :set list!<CR>
 map <SPACE>tr :set wrap!<CR>
 map <SPACE>tx :set expandtab!<CR>
 map <SPACE>tf :NERDTreeToggle<CR>
+map <SPACE>tb :call ToggleBuftabline()<CR>
 map <SPACE>cc :cclose<CR>
 map <SPACE>co :copen<CR>
 map <SPACE>ww :call ToggleWindowWidth()<CR>

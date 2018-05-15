@@ -139,8 +139,8 @@ fun! ToggleWindowHeight()
 endfunction
 
 function! ToggleBuftabline()
-    if g:buftabline_show != 2
-        let g:buftabline_show += 1
+    if g:buftabline_show == 0
+        let g:buftabline_show = 1
     else
         let g:buftabline_show = 0
     endif

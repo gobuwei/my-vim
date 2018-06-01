@@ -26,7 +26,6 @@ call plug#end()
 "
 " Plugins settings
 "
-let loaded_minibufexplorer = 1
 let g:NERDTreeWinPos="right"
 " let g:Gtags_Auto_Update = 1
 let g:linuxsty_patterns = [ "/linux", "/kernel" ]

@@ -190,7 +190,7 @@ map <C-n> :cn<CR>
 map <C-m> :cp<CR>
 
 map e :pop<CR>
-nmap \| :Gtags
+nmap \| :Gtags 
 
 " Operator-Pending Mappings
 onoremap { i{

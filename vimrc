@@ -71,12 +71,15 @@ set listchars=tab:.\
 
 
 " Theme and colors
-" colorscheme wombat256
+colorscheme wombat256
+if !exists("g:colors_name")
 " hi Normal ctermbg=black
 " hi ModeMsg ctermfg=yellow
-hi LineNr ctermfg=darkgrey ctermbg=black
+hi LineNr ctermfg=darkgrey ctermbg=NONE
 hi CursorLineNr ctermfg=black ctermbg=grey
 hi CursorLine cterm=BOLD ctermfg=NONE ctermbg=NONE
+hi VertSplit cterm=NONE ctermfg=white ctermbg=NONE
+endif
 
 " BufTabLine colors
 hi BufTabLineFill ctermbg=black

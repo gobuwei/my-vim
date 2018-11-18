@@ -124,19 +124,19 @@ endfunction
 
 fun! ToggleWindowWidth()
     let l:w = winwidth(0)
-    if l:w >= 120
+    if l:w >= 100
         silent! execute 'wincmd ='
     else
-        silent! execute 'vertical resize 120'
+        silent! execute 'vertical resize 100'
     endif
 endfunction
 
 fun! ToggleWindowHeight()
     let l:h = winheight(0)
-    if l:h >= 32
+    if l:h >= 28
         silent! execute 'wincmd ='
     else
-        silent! execute 'resize 32'
+        silent! execute 'resize 28'
     endif
 endfunction
 

@@ -20,6 +20,7 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'iamcco/markdown-preview.vim'
 Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'davidhalter/jedi-vim'
 call plug#end()
 
 
@@ -47,6 +48,10 @@ let g:tagbar_compact = 1
 let g:tagbar_singleclick = 1
 let g:tagbar_iconchars = ['▸', '▾']
 
+" settings for 'davidhalter/jedi-vim'
+let g:jedi#goto_command = "f"
+let g:jedi#popup_on_dot = 0
+let g:jedi#completions_command = "<C-n>"
 
 set number
 set relativenumber

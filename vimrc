@@ -2,42 +2,65 @@ syntax on
 filetype plugin indent on
 
 
-"
-" Plugins from github.com
-" Use command ':PlugInstall' to install them
-"
+"===============================================================
+" Plugins management.
+" Use command ':PlugInstall' to install them.
+"===============================================================
 call plug#begin()
-" Plug 'vim-airline/vim-airline'
 Plug 'itchyny/lightline.vim'
 Plug 'ap/vim-buftabline'
 Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'fatih/vim-go'
-Plug 'vivien/vim-linux-coding-style'
+Plug 'scrooloose/nerdcommenter'
 Plug 'MattesGroeger/vim-bookmarks'
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'iamcco/markdown-preview.vim'
-Plug 'iamcco/mathjax-support-for-mkdp'
-Plug 'davidhalter/jedi-vim'
+Plug 'vivien/vim-linux-coding-style'
+Plug 'mhinz/vim-grepper'
+Plug 'ivechan/gtags.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 call plug#end()
 
 
-"
-" Plugins settings
-"
-let g:NERDTreeWinPos="right"
-" let g:Gtags_Auto_Update = 1
-let g:linuxsty_patterns = [ "/linux", "/kernel" ]
+"===============================================================
+" vim-lsp setup
+"===============================================================
+let g:lsp_diagnostics_enabled = 0
+let g:lsp_diagnostics_highlights_enabled = 0
 
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-" let g:airline#extensions#tabline#buffer_idx_mode = 1
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=no
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> f <plug>(lsp-definition)
+    " nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    " nmap <buffer> <leader>rn <plug>(lsp-rename)
+    " nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    " nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
-let g:buftabline_numbers=1
-let g:buftabline_show=1
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    
+    " refer to doc to add more commands
+endfunction
 
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+
+"===============================================================
+" Settings for other pluggins
+"===============================================================
 " tagbar settings
 let g:tagbar_left = 1
 let g:tagbar_sort = 0
@@ -48,43 +71,60 @@ let g:tagbar_compact = 1
 let g:tagbar_singleclick = 1
 let g:tagbar_iconchars = ['▸', '▾']
 
-" settings for 'davidhalter/jedi-vim'
-let g:jedi#goto_command = "f"
-let g:jedi#popup_on_dot = 0
-let g:jedi#completions_command = "<C-n>"
+let g:buftabline_numbers=1
+let g:buftabline_show=1
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+" let g:airline#extensions#tabline#buffer_idx_mode = 1
+
+let g:NERDCustomDelimiters = {'c': {'left': '//', 'right': ''}}
+let g:NERDTreeWinPos="right"
+let g:linuxsty_patterns = [ "/linux", "/kernel", "u-boot", "edge-lkm" ]
+let g:Gtags_Auto_Update = 1
+
+
 
 set number
 set relativenumber
 " set noshowmode
-" set laststatus=2
+set laststatus=2
 set autowrite
 "set background=dark
 "set background=light
 set showcmd         " Show (partial) command in status line.
 set showmatch       " Show matching brackets.
-"set ignorecase     " Do case insensitive matching
+" set ignorecase     " Do case insensitive matching
 "set smartcase      " Do smart case matching
 set incsearch       " Incremental search
 set hlsearch        " Highlight search
 "set autowrite      " Automatically save before commands like :next and :make
 set hidden          " Hide buffers when they are abandoned
 set mouse=nv        " Enable mouse usage (all modes)
-set scrolloff=3
+set scrolloff=6
 set updatetime=250
 set cursorline
 set listchars=tab:.\ 
+" set colorcolumn=81
+" hi ColorColumn ctermbg=grey
+augroup vimrc_autocmds
+    autocmd BufEnter * highlight OverLength ctermbg=darkgrey
+    autocmd BufEnter *.[ch] match OverLength /\%>80v.\+/
+augroup END
 
-
+"===============================================================
 " Theme and colors
+"===============================================================
 colorscheme wombat256
 if !exists("g:colors_name")
-" hi Normal ctermbg=black
+hi Normal ctermbg=black
 " hi ModeMsg ctermfg=yellow
 hi LineNr ctermfg=darkgrey ctermbg=NONE
 hi CursorLineNr ctermfg=black ctermbg=grey
-hi CursorLine cterm=BOLD ctermfg=NONE ctermbg=NONE
+" hi CursorLine cterm=BOLD ctermfg=NONE ctermbg=NONE
 hi VertSplit cterm=NONE ctermfg=white ctermbg=NONE
 endif
+hi CursorLineNr cterm=BOLD ctermfg=black ctermbg=green
 
 " BufTabLine colors
 hi BufTabLineFill ctermbg=black
@@ -93,17 +133,29 @@ hi BufTabLineActive ctermfg=black ctermbg=grey
 hi BufTabLineHidden cterm=NONE ctermfg=grey ctermbg=black
 
 
-" Indent setup
-autocmd FileType go set sw=4 ts=4 noexpandtab
+"===============================================================
+" Indention
+"===============================================================
+autocmd FileType go,ruby set sw=4 ts=4 noexpandtab
 autocmd FileType sh,vim,java,python,xml,php,html,css,javascript set sw=4 ts=4 expandtab
 if match(getcwd(), 'work')
     autocmd FileType c,cpp set sw=4 ts=4 expandtab
 endif
 
 
-"
+"===============================================================
 " Key mappings
-"
+"===============================================================
+
+function! GetVisualSelection()
+    let [s:lnum1, s:col1] = getpos("'<")[1:2]
+    let [s:lnum2, s:col2] = getpos("'>")[1:2]
+    let s:lines = getline(s:lnum1, s:lnum2)
+    let s:lines[-1] = s:lines[-1][: s:col2 - (&selection == 'inclusive' ? 1 : 2)]
+    let s:lines[0] = s:lines[0][s:col1 - 1:]
+    " return join(s:lines, ' ')
+    return s:lines
+endfunction
 
 let os=substitute(system('uname'), '\n', '', '')
 
@@ -114,11 +166,12 @@ if os == 'Darwin'
     nmap yp :r !pbpaste<CR><CR>
 elseif os == 'Linux'
     nmap <S-y> :.w !xclip -i -sel clip<CR><CR>
-    vmap <S-y> :w !xclip -i -sel clip<CR><CR>
+    " vmap <S-y> :w !xclip -i -sel clip<CR><CR>
+    vmap <S-y> :call system('xclip -i -sel clip', GetVisualSelection())<CR>
     nmap yp :set paste<CR>:r !xclip -o -sel clip<CR>:set nopaste<CR>
 endif
 
-fun! QuickfixToggle()
+fun! ToggleQuickfix()
     let l:nr = winnr("$")
     cwindow
     let l:nr2 = winnr("$")
@@ -154,14 +207,29 @@ function! ToggleBuftabline()
     call buftabline#update(0)
 endfunction
 
-" Fn keys
-nmap <F2> :Tagbar<CR>
-nmap <F3> :NERDTreeToggle<CR>
-nmap <F4> :call QuickfixToggle()<CR>
-nmap <F5> :set ts=2 sw=2<CR>
-nmap <F6> :set ts=4 sw=4<CR>
-nmap <F7> :set ts=8 sw=8 noexpandtab<CR>
-nmap <F12> :call LoadTags()<CR>
+fun! ToggleLineNumber()
+    let l:n = &number
+    let l:rn = &relativenumber
+
+    if l:n == 0
+        set nu nornu
+    elseif l:n == 1 && l:rn == 0
+        set nu rnu
+    elseif l:n == 1 && l:rn == 1
+        set nonu nornu
+    endif
+endfunction
+
+func! ToggleIndention()
+    let l:ts = &ts
+    if l:ts == 2
+        set ts=4 sw=4 expandtab
+    elseif l:ts == 4
+        set ts=8 sw=8 noexpandtab
+    elseif l:ts == 8
+        set ts=2 sw=2 expandtab
+    endif
+endfunction
 
 " Window mappings
 map <TAB> <C-W>w
@@ -178,27 +246,30 @@ map sr <C-W>r
 map sR <C-W>R
 map sx <C-W>x
 
-" Toggle mappings
-map <SPACE>tt :Tagbar<CR>
-map <SPACE>tn :set nu!<CR>
-map <SPACE>tN :set rnu!<CR>
-map <SPACE>tl :set list!<CR>
-map <SPACE>tr :set wrap!<CR>
-map <SPACE>tx :set expandtab!<CR>
-map <SPACE>tf :NERDTreeToggle<CR>
-map <SPACE>tb :call ToggleBuftabline()<CR>
-map <SPACE>cc :cclose<CR>
-map <SPACE>co :copen<CR>
-map <SPACE>ww :call ToggleWindowWidth()<CR>
-map <SPACE>wh :call ToggleWindowHeight()<CR>
-
 map <C-k> :bp<CR>
 map <C-l> :bn<CR>
 map <C-n> :cn<CR>
-map <C-m> :cp<CR>
+map <C-p> :cp<CR>
+nmap <C-S> :w<CR>
+imap <C-S> <ESC>:w<CR>
 
 map e :pop<CR>
-nmap \| :Gtags 
+
+" SPACE leading keys mappings
+map <SPACE>cc :cclose<CR>
+map <SPACE>co :copen<CR>
+map <SPACE>tb :call ToggleBuftabline()<CR>
+map <SPACE>tf :NERDTreeToggle<CR>
+map <SPACE>th :call ToggleHighlightOverlength()<CR>
+map <SPACE>ti :call ToggleIndention()<CR>
+map <SPACE>tl :set list!<CR>
+map <SPACE>tn :call ToggleLineNumber()<CR>
+map <SPACE>tr :set wrap!<CR>
+map <SPACE>tt :Tagbar<CR>
+map <SPACE>tx :set expandtab!<CR>
+map <SPACE>wf :call ToggleQuickfix()<CR>
+map <SPACE>wh :call ToggleWindowHeight()<CR>
+map <SPACE>ww :call ToggleWindowWidth()<CR>
 
 " Operator-Pending Mappings
 onoremap { i{
@@ -209,15 +280,9 @@ onoremap [ i[
 nnoremap * :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 
 
-function! GetVisualSelection()
-    let [s:lnum1, s:col1] = getpos("'<")[1:2]
-    let [s:lnum2, s:col2] = getpos("'>")[1:2]
-    let s:lines = getline(s:lnum1, s:lnum2)
-    let s:lines[-1] = s:lines[-1][: s:col2 - (&selection == 'inclusive' ? 1 : 2)]
-    let s:lines[0] = s:lines[0][s:col1 - 1:]
-    return join(s:lines, ' ')
-endfunction
-
+"===============================================================
+" gtags-cscope setup
+"===============================================================
 
 function! CscopeKeyMapping()
     nmap  f :cs find g <C-R>=expand("<cword>")<CR><CR>
@@ -249,7 +314,7 @@ function LoadTags()
         silent! execute 'cs add ' . l:tagfile
         call CscopeKeyMapping()
         " remap <F12> to tags update
-        map <F12> :<C-U>cs reset<CR>
+        map <F11> :<C-U>cs reset<CR>
         break
     endif
 
@@ -263,8 +328,7 @@ function LoadTags()
             set cscopeprg=gtags-cscope
             silent! execute 'cs add ' . l:tagfile
             call CscopeKeyMapping()
-            " remap <F12> to tags update
-            map <F12> :<C-U>GtagsUpdate<CR>
+            map <S-f> :<C-U>GtagsUpdate<CR>
             break
         endif
 
@@ -275,88 +339,45 @@ endfunction
 call LoadTags()
 
 
-"
+"===============================================================
 " nerdcomment mappings and settings
-"
-nmap mm :call NERDComment(0,"toggle")<CR>
-nmap ms :call NERDComment(0,"sexy")<CR>
-nmap mn :call NERDComment(0,"nested")<CR>
-nmap mI :call NERDComment(0,"minimal")<CR>
-nmap ma :call NERDComment(0,"append")<CR>
-nmap mi :call NERDComment(0,"insert")<CR>
-" nmap mn :call NERDComment(0,"norm")<CR>
-" nmap mu :call NERDComment(0,"uncomment")<CR>
-" nmap m$ :call NERDComment(0,"toEOL")<CR>
-" map mv :call NERDComment(0,"invert")<CR>
-" nmap my :call NERDComment(0,"yank")<CR>
-" nmap ml :call NERDComment(0,"alignLeft")<CR>
-" nmap mb :call NERDComment(0,"alignBoth")<CR>
-vmap mm :call NERDComment(1,"toggle")<CR>
-vmap ms :call NERDComment(1,"sexy")<CR>
-vmap mn :call NERDComment(1,"nested")<CR>
-vmap mI :call NERDComment(1,"minimal")<CR>
-
+"===============================================================
 " Add space string after marker
 let NERDSpaceDelims = 1
+nmap mm :call nerdcommenter#Comment(0,"toggle")<CR>
+nmap ms :call nerdcommenter#Comment(0,"sexy")<CR>
+nmap mn :call nerdcommenter#Comment(0,"nested")<CR>
+nmap mI :call nerdcommenter#Comment(0,"minimal")<CR>
+nmap ma :call nerdcommenter#Comment(0,"append")<CR>
+nmap mi :call nerdcommenter#Comment(0,"insert")<CR>
+" nmap mn :call nerdcommenter#Comment(0,"norm")<CR>
+" nmap mu :call nerdcommenter#Comment(0,"uncomment")<CR>
+" nmap m$ :call nerdcommenter#Comment(0,"toEOL")<CR>
+" map mv :call nerdcommenter#Comment(0,"invert")<CR>
+" nmap my :call nerdcommenter#Comment(0,"yank")<CR>
+" nmap ml :call nerdcommenter#Comment(0,"alignLeft")<CR>
+" nmap mb :call nerdcommenter#Comment(0,"alignBoth")<CR>
+vmap mm :call nerdcommenter#Comment(1,"toggle")<CR>
+vmap ms :call nerdcommenter#Comment(1,"sexy")<CR>
+vmap mn :call nerdcommenter#Comment(1,"nested")<CR>
+vmap mI :call nerdcommenter#Comment(1,"minimal")<CR>
 
 
+"===============================================================
+" leader leading keys mappings
+"===============================================================
 let mapleader = ";"
 
-
-"
-" vim-go mappings and settings
-"
-au FileType go nmap f <Plug>(go-def)
-au FileType go nmap e <Plug>(go-def-pop)
-au FileType go nmap <Leader>gn <Plug>(go-rename)
-au FileType go nmap <Leader>gd <Plug>(go-doc)
-au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-au FileType go nmap <Leader>gs <Plug>(go-implements)
-au FileType go nmap <Leader>gi <Plug>(go-info)
-au FileType go nmap <leader>gr <Plug>(go-run)
-au FileType go nmap <leader>gt <Plug>(go-test)
-au FileType go nmap <leader>ga <Plug>(go-alternate)
-au FileType go nmap <leader>gb <Plug>(go-build)
-au FileType go nmap <leader>gc <Plug>(go-coverage-toggle)
-" au FileType go nmap <Leader>gdt <Plug>(go-def-tab)
-" au FileType go nmap <Leader>gds <Plug>(go-def-split)
-" au FileType go nmap <Leader>gdv <Plug>(go-def-vertical)
-
-" Alternate switch between f.go and f_test.go
-au Filetype go command! -bang A  call go#alternate#Switch(<bang>0, 'edit')
-au Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-au Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-au Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
-
-let g:go_fmt_command = "goimports"
-
-
-"
 " Bookmark mappings
-"
 nmap <Leader><Leader> <Plug>BookmarkToggle
-nmap <Leader>bi <Plug>BookmarkAnnotate
-nmap <Leader>ba <Plug>BookmarkShowAll
-nmap <Leader>bb <Plug>BookmarkNext
-nmap <Leader>bn <Plug>BookmarkNext
-nmap <Leader>bp <Plug>BookmarkPrev
-nmap <Leader>bc <Plug>BookmarkClear
-nmap <Leader>bx <Plug>BookmarkClearAll
-" nmap <Leader>kk <Plug>BookmarkMoveUp
-" nmap <Leader>jj <Plug>BookmarkMoveDown
-nmap <Leader>bg <Plug>BookmarkMoveToLine
+nmap <Leader>k <Plug>BookmarkPrev
+nmap <Leader>j <Plug>BookmarkNext
+nmap <Leader>x <Plug>BookmarkClearAll
+" nmap <Leader>c <Plug>BookmarkClear
 
-
-"
 " Grep mappings
-"
-map  <Leader>g  :Grep -rn 
-nmap <Leader>gg :Grep -rn --include='*.[chS]' --include='*.cpp' <C-R>=expand("<cword>")<CR> .<CR>
-nmap <Leader>ga :Grep -rn <C-R>=expand("<cword>")<CR> .<CR>
-vmap <Leader>gg :<C-U>Grep -rn --include='*.[chS]' --include='*.cpp' <C-R>=escape(GetVisualSelection(), ' ')<CR> .<CR>
-vmap <Leader>ga :<C-U>Grep -rn <C-R>=escape(GetVisualSelection(), ' ')<CR> .<CR>
-map  <Leader>gs :cs f e 
-map  <Leader>gt :Gtags 
+nnoremap <leader>g :Grepper -tool git -open -switch -cword -noprompt<cr>
+nnoremap " :Grepper<cr>
 
 
 " Jump to the last position when reopening a file

@@ -90,6 +90,16 @@ let g:NERDTreeWinPos="right"
 let g:linuxsty_patterns = [ "/linux", "/kernel", "u-boot", "edge-lkm" ]
 let g:Gtags_Auto_Update = 1
 
+" Show relative file path on lightline status line
+let g:lightline = { 'component_function': { 'filename': 'LightlineFilename', } }
+function! LightlineFilename()
+    let root = fnamemodify(get(b:, 'git_dir'), ':h')
+    let path = expand('%:p')
+    if path[:len(root)-1] ==# root
+        return path[len(root)+1:]
+    endif
+    return expand('%')
+endfunction
 
 
 set number

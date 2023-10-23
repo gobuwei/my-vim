@@ -229,23 +229,32 @@ fun! ToggleLineNumber()
     let l:rn = &relativenumber
 
     if l:n == 0
-        set nu nornu
-    elseif l:n == 1 && l:rn == 0
         set nu rnu
-    elseif l:n == 1 && l:rn == 1
+    elseif l:n == 1 && l:rn == 0
         set nonu nornu
+    elseif l:n == 1 && l:rn == 1
+        set nu nornu
     endif
 endfunction
 
 func! ToggleIndention()
-    let l:ts = &ts
-    if l:ts == 2
+    if &ts == 2
         set ts=4 sw=4 expandtab
-    elseif l:ts == 4
+    elseif &ts == 4
         set ts=8 sw=8 noexpandtab
-    elseif l:ts == 8
+    elseif &ts == 8
         set ts=2 sw=2 expandtab
     endif
+    echo &ts &expandtab
+endfunction
+
+func! ToggleExpandtab()
+    if &expandtab == 0
+        set expandtab
+    else
+        set noexpandtab
+    endif
+    echo &ts &expandtab
 endfunction
 
 " Window mappings
@@ -279,6 +288,7 @@ map <SPACE>tb :call ToggleBuftabline()<CR>
 map <SPACE>tf :NERDTreeToggle<CR>
 map <SPACE>th :call ToggleHighlightOverlength()<CR>
 map <SPACE>ti :call ToggleIndention()<CR>
+map <SPACE>tI :call ToggleExpandtab()<CR>
 map <SPACE>tl :set list!<CR>
 map <SPACE>tn :call ToggleLineNumber()<CR>
 map <SPACE>tr :set wrap!<CR>

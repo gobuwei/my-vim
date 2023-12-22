@@ -18,6 +18,7 @@ Plug 'mhinz/vim-grepper'
 Plug 'ivechan/gtags.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
+Plug 'obcat/vim-sclow'
 call plug#end()
 
 
@@ -101,6 +102,8 @@ function! LightlineFilename()
     return expand('%')
 endfunction
 
+" sclow scroll bar
+let g:sclow_hide_full_length = 1
 
 set number
 set relativenumber
